@@ -102,6 +102,7 @@ def sync_valdata(verbose=0):
 
 
 def get_röster(verbose = 0):
+    """return röster per parti"""
 #    n_rödgröna1 = 0
 #    n_rödgröna2 = 0
 #    n_blågula = 0
@@ -109,7 +110,7 @@ def get_röster(verbose = 0):
 #    n_alla = 0
     n_totalt = 0
 
-    # V, S, MP, C, L, M, KD, SD 
+    # V, S, MP, C, L, M, KD, SD
     V = S = MP = C = L = M = KD = SD = 0
     for pr in data['valomrade']['rostfordelning']['rosterPaverkaMandat']['partiRoster']:
         pb = pr['partibeteckning']
@@ -136,46 +137,62 @@ def get_röster(verbose = 0):
         if verbose:
             print(f"{pb}:\t{nr}")
 
-    # Övriga            
-    (pb, n_övriga) = ('Övriga', data['valomrade']['rostfordelning']['rosterPaverkaMandat']['rosterOvrigaPartier']['antalRoster'])
+    # Övriga
+    (pb, n_ovriga) = (
+            'Övriga',
+            data['valomrade']
+                ['rostfordelning']
+                ['rosterPaverkaMandat']
+                ['rosterOvrigaPartier']
+                ['antalRoster'])
     if verbose:
-        print(f"{pb}:\t{n_övriga}")
+        print(f"{pb}:\t{n_ovriga}")
 
     # Ogiltiga
-    n_totalt += n_övriga
-    (pb, n_ogiltiga) = ('Ogiltiga', data['valomrade']['rostfordelning']['rosterEjPaverkaMandat']['antalRoster'])
+    n_totalt += n_ovriga
+    (pb, n_ogiltiga) = (
+            'Ogiltiga',
+            data['valomrade']
+                ['rostfordelning']
+                ['rosterEjPaverkaMandat']
+                ['antalRoster'])
     if verbose:
         print(f"{pb}:\t{n_ogiltiga}")
 
-    return np.array([V, S, MP, C, L, M, KD, SD, n_övriga, n_ogiltiga, n_totalt, n_totalt + n_ogiltiga])
+    return np.array([V, S, MP, C, L, M, KD, SD,
+                     n_ovriga, n_ogiltiga, n_totalt,
+                     n_totalt + n_ogiltiga,])
 
 
 if __name__ == '__main__':
 
     sync_valdata()
 
-    with open("valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json", "r") as f:
+    with open(
+            "valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json",
+            "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    precision = 1
-    [V, S, MP, C, L, M, KD, SD, ÖVR, OG, TOT_G, TOT] = röster = get_röster(0)
-    namn = ['V', 'S', 'MP', 'C', 'L', 'M', 'KD', 'SD', 'Övriga', 'Ogiltiga', 'Totalt giltiga', 'Totalt']
-    res = dict(zip(namn, röster))
+    # precision = 1
+    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster = get_röster(0)
+    namn = [
+            'V', 'S', 'MP', 'C', 'L', 'M', 'KD', 'SD',
+            'Övriga', 'Ogiltiga', 'Totalt giltiga', 'Totalt',
+    ]
+    res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
             continue
         # print(f"{key}:\t\t {(100 * val / TOT_G).round(precision):>6.2f} %")
-        print(f"{key}:\t\t {(100 * val / TOT_G):>6.1f} %")
+        print(f"{key}:\t\t{val:>10_d}\t\t{(100 * val / TOT_G):>6.1f} %")
     print()
-
-
+    print(f"Totalt giltiga:\t{TOT_G:10_d}")
+    print(f"Totalt:\t\t{TOT:10_d}")
+    print()
     RG = V + S + MP + C
     GB = L + M + KD + SD
     RG_PROC = RG / TOT_G
     GB_PROC = GB / TOT_G
-    # print(f"{(100 * get_röster()[:9] / TOT_G).round(1)}")
-    print(f"Rödgröna:\t{RG:10d}\t\t{( 100 * RG / TOT_G ):>6.2f} %")
-    print(f"Gulblåa:\t{GB:10d}\t\t{( 100 * GB / TOT_G ):>6.2f} %")
-    print(f"Differens:\t{RG - GB:10d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
-    print(f"Totalt giltiga:\t{TOT_G:10d}")
-    print(f"Totalt:\t\t{TOT:10d}")
+    print(f"Rödgröna:\t{RG:10_d}\t\t{(100 * RG / TOT_G):>6.2f} %")
+    print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
+    print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
