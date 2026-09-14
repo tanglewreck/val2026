@@ -24,12 +24,13 @@ def calculate_md5(filepath: Path) -> str:
     return hasher.hexdigest()
 
 
-def sync_valdata():
+def sync_valdata(verbose=0):
     """sync valdata"""
     DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
     EXTRACT_DIR.mkdir(parents=True, exist_ok=True)
 
-    print(f"Hämtar indexfil: {INDEX_URL}")
+    if verbose:
+        print(f"Hämtar indexfil: {INDEX_URL}")
     request = urllib.request.Request(
         INDEX_URL, headers={"User-Agent": "ValdataFetcher/1.0"}
     )
@@ -66,11 +67,13 @@ def sync_valdata():
             local_zip_path.exists()
             and calculate_md5(local_zip_path) == expected_md5
         ):
-            print(f"[OFÖRÄNDRAD] {filename}")
+            if verbose:
+                print(f"[OFÖRÄNDRAD] {filename}")
             continue
 
         # Ladda ner ny eller ändrad fil
-        print(f"[HÄMTAR] {filename}...")
+        if verbose:
+            print(f"[HÄMTAR] {filename}...")
         try:
             urllib.request.urlretrieve(file_url, local_zip_path)
         except Exception as e:
@@ -87,12 +90,14 @@ def sync_valdata():
             continue
 
         # Packa upp ZIP-filen
-        print(f"[PACKAR UPP] {filename} -> {EXTRACT_DIR}")
+        if verbose:
+            print(f"[PACKAR UPP] {filename} -> {EXTRACT_DIR}")
         with zipfile.ZipFile(local_zip_path, "r") as zip_ref:
             zip_ref.extractall(EXTRACT_DIR)
 
-    print("Synkronisering genomförd.")
-
+    if verbose:
+        print("Synkronisering genomförd.")
+    
 
 if __name__ == "__main__":
     sync_valdata()
