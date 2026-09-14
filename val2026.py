@@ -173,22 +173,56 @@ if __name__ == '__main__':
 
     sync_valdata()
 
+    # partinamn
+    namn = [
+            'V', 'S', 'MP', 'C', 'L', 'M', 'KD', 'SD',
+            'Övriga', 'Ogiltiga', 'Totalt giltiga', 'Totalt',
+    ]
+
+    # VALNATT
+    print("VALNATT\n")
     try:
         with open(
                 "valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json",
-                # "valdata_json/Val_2026_slutlig_mandatfordelning_00_RD.json",
                 "r", encoding="utf-8") as f:
             data = json.load(f)
     except OSError as e:
         raise SystemExit(1) from e
 
-    # precision = 1
     roster = get_röster(data, verbose=0)
     [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster
-    namn = [
-            'V', 'S', 'MP', 'C', 'L', 'M', 'KD', 'SD',
-            'Övriga', 'Ogiltiga', 'Totalt giltiga', 'Totalt',
-    ]
+    res = dict(zip(namn, roster))
+    for key, val in res.items():
+        if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
+            continue
+        # print(f"{key}:\t\t {(100 * val / TOT_G).round(precision):>6.2f} %")
+        print(f"{key}:\t\t{val:>10_d}\t\t{(100 * val / TOT_G):>6.1f} %")
+    print()
+    print(f"Totalt giltiga:\t{TOT_G:10_d}")
+    print(f"Totalt:\t\t{TOT:10_d}")
+    print()
+    RG = V + S + MP + C
+    GB = L + M + KD + SD
+    RG_PROC = RG / TOT_G
+    GB_PROC = GB / TOT_G
+    print(f"Rödgröna:\t{RG:10_d}\t\t{(100 * RG / TOT_G):>6.2f} %")
+    print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
+    print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
+
+
+    # SLUTLIG
+    print("\n")
+    print("SLUTLIG\n")
+    try:
+        with open(
+                "valdata_json/Val_2026_slutlig_mandatfordelning_00_RD.json",
+                "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except OSError as e:
+        raise SystemExit(1) from e
+
+    roster = get_röster(data, verbose=0)
+    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster
     res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
