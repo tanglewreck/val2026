@@ -157,6 +157,10 @@ def get_röster(data, verbose = 0):
     if verbose:
         print(f"{pb}:\t{n_ogiltiga}")
 
+    # distrikt
+    n_distrikt_ska_raknas = data['valomrade']['antalValdistriktSomSkaRaknas']
+    n_distrikt_raknade = data['valomrade']['antalValdistriktRaknade']
+
     return np.array([vansterpartiet,
                      socialdemokraterna,
                      miljopartiet,
@@ -166,7 +170,9 @@ def get_röster(data, verbose = 0):
                      kristdemokraterna,
                      sverigedemokraterna,
                      n_ovriga, n_ogiltiga, n_totalt,
-                     n_totalt + n_ogiltiga,])
+                     n_totalt + n_ogiltiga,
+                     n_distrikt_ska_raknas,
+                     n_distrikt_raknade,])
 
 
 if __name__ == '__main__':
@@ -190,7 +196,19 @@ if __name__ == '__main__':
         raise SystemExit(1) from e
 
     roster = get_röster(data, verbose=0)
-    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster
+    [V, S, MP, C,
+     L, M, KD, SD,
+     OVR, OG, 
+     TOT_G, TOT,
+     N_DISTRIKT, 
+     N_DISTRIKT_RAKNADE] = roster
+
+    # Antal räknade distrikt
+    print(
+          f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)\n"""
+    )
+
     res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
@@ -222,7 +240,19 @@ if __name__ == '__main__':
         raise SystemExit(1) from e
 
     roster = get_röster(data, verbose=0)
-    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster
+    [V, S, MP, C,
+     L, M, KD, SD,
+     OVR, OG, 
+     TOT_G, TOT,
+     N_DISTRIKT, 
+     N_DISTRIKT_RAKNADE] = roster
+
+    # Antal räknade distrikt
+    print(
+          f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)\n"""
+    )
+
     res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
