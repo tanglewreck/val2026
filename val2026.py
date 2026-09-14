@@ -101,41 +101,39 @@ def sync_valdata(verbose=0):
         print("Synkronisering genomförd.")
 
 
-def get_röster(verbose = 0):
+def get_röster(data, verbose = 0):
     """return röster per parti"""
-#    n_rödgröna1 = 0
-#    n_rödgröna2 = 0
-#    n_blågula = 0
-#    n_borgerliga = 0
-#    n_alla = 0
-    n_totalt = 0
 
-    # V, S, MP, C, L, M, KD, SD
-    V = S = MP = C = L = M = KD = SD = 0
+    # initialisera parti-variabler
+    n_totalt = 0
+    vansterpartiet = socialdemokraterna = miljopartiet = 0
+    centern = liberalerna = moderaterna = 0
+    kristdemokraterna = sverigedemokraterna = 0
+
+    # För varje respektive parti, hämta antalet röster
     for pr in data['valomrade']['rostfordelning']['rosterPaverkaMandat']['partiRoster']:
         pb = pr['partibeteckning']
         nr = pr['antalRoster']
 
-        n_totalt += nr
-
-        if 'Sociald' in pb:
-            S = nr
-        if 'Vänster' in pb:
-            V = nr
+        if 'Socialdemokraterna' in pb:
+            socialdemokraterna = nr
+        if 'Vänsterpartiet' in pb:
+            vansterpartiet = nr
         if 'Miljöpartiet' in pb:
-            MP = nr
-        if 'Center' in pb:
-            C = nr
-        if 'Moderat' in pb:
-            M = nr
-        if 'Liberal' in pb:
-            L = nr
-        if 'Kristd' in pb:
-            KD = nr
-        if 'Sveriged' in pb:
-            SD = nr
+            miljopartiet = nr
+        if 'Centerpartiet' in pb:
+            centern = nr
+        if 'Moderaterna' in pb:
+            moderaterna = nr
+        if 'Liberalerna' in pb:
+            liberalerna = nr
+        if 'Kristdemokraterna' in pb:
+            kristdemokraterna = nr
+        if 'Sverigedemokraterna' in pb:
+            sverigedemokraterna = nr
         if verbose:
             print(f"{pb}:\t{nr}")
+        n_totalt += nr
 
     # Övriga
     (pb, n_ovriga) = (
@@ -159,7 +157,14 @@ def get_röster(verbose = 0):
     if verbose:
         print(f"{pb}:\t{n_ogiltiga}")
 
-    return np.array([V, S, MP, C, L, M, KD, SD,
+    return np.array([vansterpartiet,
+                     socialdemokraterna,
+                     miljopartiet,
+                     centern,
+                     liberalerna,
+                     moderaterna,
+                     kristdemokraterna,
+                     sverigedemokraterna,
                      n_ovriga, n_ogiltiga, n_totalt,
                      n_totalt + n_ogiltiga,])
 
@@ -168,13 +173,18 @@ if __name__ == '__main__':
 
     sync_valdata()
 
-    with open(
-            "valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json",
-            "r", encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        with open(
+                "valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json",
+                # "valdata_json/Val_2026_slutlig_mandatfordelning_00_RD.json",
+                "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except OSError as e:
+        raise SystemExit(1) from e
 
     # precision = 1
-    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster = get_röster(0)
+    roster = get_röster(data, verbose=0)
+    [V, S, MP, C, L, M, KD, SD, OVR, OG, TOT_G, TOT] = roster
     namn = [
             'V', 'S', 'MP', 'C', 'L', 'M', 'KD', 'SD',
             'Övriga', 'Ogiltiga', 'Totalt giltiga', 'Totalt',
