@@ -186,7 +186,7 @@ if __name__ == '__main__':
     ]
 
     # VALNATT
-    print("VALNATT\n")
+    print("VALNATT:")
     try:
         with open(
                 "valdata_json/Val_2026_preliminar_mandatfordelning_00_RD.json",
@@ -202,23 +202,15 @@ if __name__ == '__main__':
      TOT_G, TOT,
      N_DISTRIKT, 
      N_DISTRIKT_RAKNADE] = roster
-
-    # Antal räknade distrikt
-    print(
-          f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
-          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)\n"""
-    )
-
+    # make a dict with partinamn as keys
     res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
             continue
         # print(f"{key}:\t\t {(100 * val / TOT_G).round(precision):>6.2f} %")
         print(f"{key}:\t\t{val:>10_d}\t\t{(100 * val / TOT_G):>6.1f} %")
-    print()
     print(f"Totalt giltiga:\t{TOT_G:10_d}")
     print(f"Totalt:\t\t{TOT:10_d}")
-    print()
     RG = V + S + MP + C
     GB = L + M + KD + SD
     RG_PROC = RG / TOT_G
@@ -226,11 +218,13 @@ if __name__ == '__main__':
     print(f"Rödgröna:\t{RG:10_d}\t\t{(100 * RG / TOT_G):>6.2f} %")
     print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
-
+    # Antal räknade distrikt
+    print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
+    print()
 
     # SLUTLIG
-    print("\n")
-    print("SLUTLIG\n")
+    print("SLUTLIG:")
     try:
         with open(
                 "valdata_json/Val_2026_slutlig_mandatfordelning_00_RD.json",
@@ -246,23 +240,15 @@ if __name__ == '__main__':
      TOT_G, TOT,
      N_DISTRIKT, 
      N_DISTRIKT_RAKNADE] = roster
-
-    # Antal räknade distrikt
-    print(
-          f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
-          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)\n"""
-    )
-
+    # make a dict with partinamn as keys
     res = dict(zip(namn, roster))
     for key, val in res.items():
         if key in ("Ogiltiga", "Totalt", "Totalt giltiga"):
             continue
         # print(f"{key}:\t\t {(100 * val / TOT_G).round(precision):>6.2f} %")
         print(f"{key}:\t\t{val:>10_d}\t\t{(100 * val / TOT_G):>6.1f} %")
-    print()
     print(f"Totalt giltiga:\t{TOT_G:10_d}")
     print(f"Totalt:\t\t{TOT:10_d}")
-    print()
     RG = V + S + MP + C
     GB = L + M + KD + SD
     RG_PROC = RG / TOT_G
@@ -270,3 +256,6 @@ if __name__ == '__main__':
     print(f"Rödgröna:\t{RG:10_d}\t\t{(100 * RG / TOT_G):>6.2f} %")
     print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
+    # Antal räknade distrikt
+    print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
