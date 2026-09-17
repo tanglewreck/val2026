@@ -262,7 +262,8 @@ if __name__ == '__main__':
     # Antal räknade distrikt
     print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
           f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
-    mandat_fordelning = get_mandat(data, verbose=1)
+    # Mandat
+    mandat_fordelning = get_mandat(data, verbose=0)
     print("Rödgröna vs. Blågula: ", end="")
     print(f"{mandat_fordelning[-2]} - ", end="")
     print(f"{mandat_fordelning[-1]} mandat")
@@ -306,3 +307,8 @@ if __name__ == '__main__':
     # Antal räknade distrikt
     print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
           f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
+    # Mandat
+    # mandat_fordelning = get_mandat(data, verbose=0)
+    # print("Rödgröna vs. Blågula: ", end="")
+    # print(f"{mandat_fordelning[-2]} - ", end="")
+    # print(f"{mandat_fordelning[-1]} mandat")
