@@ -77,7 +77,8 @@ def sync_valdata(verbose=0):
                 print(f"[OFÖRÄNDRAD] {filename}")
             continue
 
-        # Ladda ner ny eller ändrad fil
+        # filen ny el. förändrad enl. nedladdad checksumma,
+        # så ladda ner ny el. förändrad fil
         if verbose:
             print(f"[HÄMTAR] {filename}...")
         try:
