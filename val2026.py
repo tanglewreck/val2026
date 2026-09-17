@@ -198,9 +198,9 @@ if __name__ == '__main__':
     roster = get_röster(data, verbose=0)
     [V, S, MP, C,
      L, M, KD, SD,
-     OVR, OG, 
+     OVR, OG,
      TOT_G, TOT,
-     N_DISTRIKT, 
+     N_DISTRIKT,
      N_DISTRIKT_RAKNADE] = roster
     # make a dict with partinamn as keys
     res = dict(zip(namn, roster))
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
     # Antal räknade distrikt
-    print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+    print(f"""Distrikt: {N_DISTRIKT_RAKNADE} """
           f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
     print()
 
@@ -236,9 +236,9 @@ if __name__ == '__main__':
     roster = get_röster(data, verbose=0)
     [V, S, MP, C,
      L, M, KD, SD,
-     OVR, OG, 
+     OVR, OG,
      TOT_G, TOT,
-     N_DISTRIKT, 
+     N_DISTRIKT,
      N_DISTRIKT_RAKNADE] = roster
     # make a dict with partinamn as keys
     res = dict(zip(namn, roster))
@@ -257,5 +257,5 @@ if __name__ == '__main__':
     print(f"Gulblåa:\t{GB:10_d}\t\t{(100 * GB / TOT_G):>6.2f} %")
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
     # Antal räknade distrikt
-    print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
+    print(f"""Distrikt: {N_DISTRIKT_RAKNADE} """
           f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
