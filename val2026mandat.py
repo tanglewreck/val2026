@@ -261,7 +261,7 @@ if __name__ == '__main__':
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
     # Antal räknade distrikt
     print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
-          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.2f}%)""")
     # Mandat
     mandat_fordelning = get_mandat(data, verbose=0)
     print("Rödgröna vs. Blågula: ", end="")
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     print(f"Differens:\t{RG - GB:10_d}\t\t{100 * (RG_PROC - GB_PROC):>6.2f} %")
     # Antal räknade distrikt
     print(f"""Antal räknade distrikt: {N_DISTRIKT_RAKNADE} """
-          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.1f}%)""")
+          f"""av {N_DISTRIKT} ({N_DISTRIKT_RAKNADE / N_DISTRIKT * 100:.2f}%)""")
     # Mandat
     # mandat_fordelning = get_mandat(data, verbose=0)
     # print("Rödgröna vs. Blågula: ", end="")
